@@ -1,0 +1,35 @@
+﻿<div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            @Html.ActionLink("PokeSpam", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+        </div>
+        <div class="navbar-collapse collapse">
+            <div class="nav navbar-nav navbar-right">
+                <form class="navbar-form navbar-left" role="search">
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Pola baru">
+                    </div>
+                    <button class="btn btn-default">Tambah Pola</button>
+                </form>
+                <form class="navbar-form navbar-left" role="search">
+                    <button type="submit" class="btn btn-primary">POKE THE SPAM</button>
+                </form>
+            </div>
+            <ul class="nav navbar-nav navbar-right">
+                <li class="dropdown" style="cursor: pointer">
+                    <a class="dropdown-toggle" data-toggle="dropdown" id="themes">Algoritma <span class="caret"></span></a>
+                    <ul class="dropdown-menu" aria-labelledby="themes">
+                        <li><a>Boyer Moore</a></li>
+                        <li><a>KMP</a></li>
+                        <li><a>Regex</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
