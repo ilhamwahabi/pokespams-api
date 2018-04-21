@@ -12,18 +12,18 @@ namespace PokeSpams.Controllers.Api
 {
     public class SearchController : ApiController
     {
-        [HttpGet]
-        public List<String> GetSearch()
-        {
-            return new List<String> { "Hei", "Woy" };
-        }
-
         [HttpPost]
         public List<List<String>> PostSearch(string method)
         {
             var algo = new Algorithm();
             var result = new List<List<String>>();
-            var pattern = new List<String> { "Test", "Jual" };
+            var pattern = new List<String> {
+                "tes",
+                "jual",
+                "telpon",
+                "beli",
+                "game"
+            };
 
             if (method == "regex")
             {
@@ -37,7 +37,6 @@ namespace PokeSpams.Controllers.Api
             }
 
             return result;
-            //return new List<String> { "Yes", "No", method };
         }
     }
 }
