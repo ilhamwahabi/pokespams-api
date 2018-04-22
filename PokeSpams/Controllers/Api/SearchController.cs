@@ -4,6 +4,7 @@ using System.Collections.Specialized;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Formatting;
 using System.Web.Http;
 using System.Web.Http.Results;
 using PokeSpams.Models;
@@ -12,26 +13,22 @@ namespace PokeSpams.Controllers.Api
 {
     public class SearchController : ApiController
     {
-        [HttpPost]
-        public List<List<String>> PostSearch(string method)
+        [HttpGet]
+        public List<List<String>> GetSearch(string method, string patterns)
         {
+            List<String> pattern = new List<String> (patterns.Split(','));
             var algo = new Algorithm();
             var result = new List<List<String>>();
-            var pattern = new List<String> {
-                "tes",
-                "jual",
-                "telpon",
-                "beli",
-                "game"
-            };
-
+            
             if (method == "regex")
             {
-                 result = algo.Regex(pattern);
-            } else if (method == "kmp")
+                result = algo.Regex(pattern);
+            }
+            else if (method == "kmp")
             {
                 result = algo.KMP(pattern);
-            } else
+            }
+            else if (method == "bym")
             {
                 result = algo.BooyerMoore(pattern);
             }

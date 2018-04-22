@@ -7,11 +7,10 @@ namespace PokeSpams.Models
 {
     public class Algorithm
     {
-        //private string accessToken = "985637925676204032-oZYIX5y0ARwvWEYsj91AwnYUjoe9ISR";
-        //private string accessTokenSecret = "qt6tgqWWUsufyCqHREhTdGkS726i1DCVEsULjRXxAmKyP";
-        //private string consumerKey = "CMF9kqcVcmESFSB5wxKDd3ifZ";
-        //private string consumerKeySecret = " vif3dOiwCSeQPowWvdY1JYN51ciTJrppJ4CeifeIjyyZrJjiYl";
 
+        ////////////////////////////////////////////////////
+        ///////////////////// K M P ////////////////////////
+        ////////////////////////////////////////////////////
         public List<List<string>> KMP(List<string> pattern)
         {
 
@@ -20,9 +19,13 @@ namespace PokeSpams.Models
             return result;
         }
 
+        /////////////////////////////////////////////////////////////
+        //////////////////// B O O Y E R M O O R E //////////////////
+        /////////////////////////////////////////////////////////////
         public List<List<string>> BooyerMoore(List<string> patterns)
         {
             List<List<String>> result = new List<List<String>> { };
+            var service = new Services();
 
             var inspectWord = new List<String>
             {
@@ -33,6 +36,8 @@ namespace PokeSpams.Models
                 "Dijual test",
                 "bisa aku test?",
                 "atest",
+                "",
+                "123453767",
                 "Tidak ada tempat yang lebin indah daripada tempat yang sudah dite",
                 "Tidak ada tempat yang lebih indah selain tempat ini"
             };
@@ -40,10 +45,10 @@ namespace PokeSpams.Models
             // Iterasi setiap kalimat
             foreach(var word in inspectWord)
             {
-                // Tiap kalimat dicocokkan dengan pattern
                 var patternResult = new List<String> { };
 
-                foreach(var pattern in patterns)
+                // Tiap kalimat dicocokkan dengan pattern
+                foreach (var pattern in patterns)
                 {
                     List<int> found = new List<int>(){ 0, 0 };
                     var pointer = pattern.Count() - 1;
@@ -54,7 +59,7 @@ namespace PokeSpams.Models
                         pointer <= (word.Count() - 1) && 
                         word.Count() >= pattern.Count())
                     {
-                        found = checkWord(
+                        found = service.checkWord(
                                     pattern.ToLower(),
                                     word.Substring(
                                         pointer - (pattern.Count() - 1),
@@ -62,13 +67,14 @@ namespace PokeSpams.Models
                                     ).ToLower()
                                 );
 
-                        // Jika tidak ditemukan pattern itu didalam kalimat
+                        // Jika masih belum ditemukan, lakukakan looking-glass
                         if (found[0].Equals(0))
                         {
                             pointer += found[1];
                         }
                     }
 
+                    // Jika ditemukan, simpan katanya jika belum tersimpan serta simpan patternnya
                     if (found[0].Equals(1))
                     {
                         if (patternResult.IndexOf(word) == -1)
@@ -79,46 +85,18 @@ namespace PokeSpams.Models
                     }
                 }
 
+                // Jika list tidak kosong, berarti ditemukan maka tambahkan ke hasil
                 if (patternResult.IndexOf(word) == 0)
                 {
                     result.Add(patternResult);
                 }
             }
-            
             return result;
         }
 
-        public List<int> checkWord(String pattern, String word)
-        {
-            var equals = true;
-            var stepSize = 0;
-
-            if (pattern.Last() == word.Last())
-            {
-                var i = 1;
-                while (equals && i <= (pattern.Count() - 1))
-                {
-                    if (
-                        pattern.ElementAt((pattern.Count() - 1) - i)
-                            .Equals(word.ElementAt((pattern.Count() - 1) - i)))
-                    {
-                        i++;
-                    } else
-                    {
-                        equals = false;
-                        stepSize = i;
-                    }
-                }
-            }
-            else
-            {
-                stepSize = pattern.Count() - (pattern.IndexOf(word.Last()) == -1 ? 0 : pattern.IndexOf(word.Last()) + 1);
-                equals = false;
-            }
-
-            return new List<int> { equals ? 1 : 0, stepSize };
-        }
-
+        ////////////////////////////////////////////////////
+        /////////////////// R E G E X //////////////////////
+        ////////////////////////////////////////////////////
         public List<List<string>> Regex(List<string> pattern)
         {
             var result = new List<List<string>> { };
