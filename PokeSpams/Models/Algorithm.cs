@@ -32,13 +32,8 @@ namespace PokeSpams.Models
                 "Dijual buku seharga 2000",
                 "Test drive segera ditempat anda",
                 "Hari yang cerah di pantai",
-                "tes",
-                "Dijual test",
-                "bisa aku test?",
-                "atest",
-                "",
-                "123453767",
-                "Tidak ada tempat yang lebin indah daripada tempat yang sudah dite",
+                "Enaknya menjadi atesit pada hari ini",
+                "Tidak ada tempat yang lebin indah daripada tempat yang sudah dites",
                 "Tidak ada tempat yang lebih indah selain tempat ini"
             };
             
