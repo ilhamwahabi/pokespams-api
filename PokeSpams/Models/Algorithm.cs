@@ -69,9 +69,7 @@ namespace PokeSpams.Models
 
                         // Jika masih belum ditemukan, lakukakan looking-glass
                         if (found[0].Equals(0))
-                        {
                             pointer += found[1];
-                        }
                     }
 
                     // Jika ditemukan, simpan katanya jika belum tersimpan serta simpan patternnya
@@ -80,16 +78,14 @@ namespace PokeSpams.Models
                         if (patternResult.IndexOf(word) == -1)
                         {
                             patternResult.Add(word);
+                            patternResult.Add(pattern);
                         }
-                        patternResult.Add(pattern);
                     }
                 }
 
                 // Jika list tidak kosong, berarti ditemukan maka tambahkan ke hasil
                 if (patternResult.IndexOf(word) == 0)
-                {
                     result.Add(patternResult);
-                }
             }
             return result;
         }
