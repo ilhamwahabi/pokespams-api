@@ -1,12 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Web;
 
 namespace PokeSpams.Models
 {
     public class Algorithm
     {
+        List<String> inspectWord = new List<String>
+        {
+            "Dijual buku seharga 2000",
+            "Test drive segera ditempat anda",
+            "Hari yang cerah di pantai",
+            "Enaknya menjadi atesit pada hari ini",
+            "Tidak ada tempat yang lebin indah daripada tempat yang sudah dites",
+            "Tidak ada tempat yang lebih indah selain tempat ini"
+        };
 
         ////////////////////////////////////////////////////
         ///////////////////// K M P ////////////////////////
@@ -26,16 +36,6 @@ namespace PokeSpams.Models
         {
             List<List<String>> result = new List<List<String>> { };
             var service = new Services();
-
-            var inspectWord = new List<String>
-            {
-                "Dijual buku seharga 2000",
-                "Test drive segera ditempat anda",
-                "Hari yang cerah di pantai",
-                "Enaknya menjadi atesit pada hari ini",
-                "Tidak ada tempat yang lebin indah daripada tempat yang sudah dites",
-                "Tidak ada tempat yang lebih indah selain tempat ini"
-            };
             
             // Iterasi setiap kalimat
             foreach(var word in inspectWord)
@@ -88,9 +88,29 @@ namespace PokeSpams.Models
         ////////////////////////////////////////////////////
         /////////////////// R E G E X //////////////////////
         ////////////////////////////////////////////////////
-        public List<List<string>> Regex(List<string> pattern)
+        public List<List<string>> Rgx(List<string> patterns)
         {
             var result = new List<List<string>> { };
+
+            foreach (var word in inspectWord)
+            {
+                var patternResult = new List<String> { };
+                var found = false;
+                foreach (var pattern in patterns)
+                {
+                    Match match = Regex.Match(word, @"" + pattern ,RegexOptions.IgnoreCase);
+
+                    if (match.Success)
+                    {
+                        found = true;
+                        if (patternResult.IndexOf(word) != 0)
+                            patternResult.Add(word);
+                        patternResult.Add(pattern);
+                    }
+                }
+                if (found)
+                    result.Add(patternResult);
+            }
 
             return result;
         }

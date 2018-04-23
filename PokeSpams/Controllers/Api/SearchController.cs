@@ -24,7 +24,7 @@ namespace PokeSpams.Controllers.Api
             
             if (method == "regex")
             {
-                result = algo.Regex(pattern);
+                result = algo.Rgx(pattern);
             }
             else if (method == "kmp")
             {
