@@ -8,7 +8,7 @@ namespace PokeSpams.Models
 {
     public class Algorithm
     {
-        List<String> inspectWord = new List<String>
+        private static List<String> inspectWord = new List<String>
         {
             "Dijual buku seharga 2000",
             "Test drive segera ditempat anda",
@@ -21,10 +21,53 @@ namespace PokeSpams.Models
         ////////////////////////////////////////////////////
         ///////////////////// K M P ////////////////////////
         ////////////////////////////////////////////////////
-        public List<List<string>> KMP(List<string> pattern)
+        public static List<List<string>> Kmp(List<string> patterns)
         {
-
             var result = new List<List<string>> { };
+
+            foreach (var word in inspectWord)
+            {
+                var patternResult = new List<String> { };
+                var n = word.Count();
+
+                foreach (var pattern in patterns)
+                {
+                    var m = pattern.Count();
+                    var found = false;
+                    var border = Services.borderFunction(pattern);
+
+                    var i = 0;
+                    var j = 0;
+
+                    while (i < n && !found)
+                    {
+                        if (pattern.ElementAt(j).Equals(word.ToLower().ElementAt(i)))
+                        {
+                            if (j == m - 1)
+                            {
+                                found = true;
+                                if (patternResult.IndexOf(word) == -1)
+                                {
+                                    patternResult.Add(word);
+                                }
+                                patternResult.Add(pattern);
+                            }
+                            i++;
+                            j++;
+                        } else if (j > 0)
+                        {
+                            j = border[j - 1];
+                        }
+                        else
+                        {
+                            i++;
+                        }
+                    }
+                }
+
+                if (patternResult.IndexOf(word) == 0)
+                    result.Add(patternResult);
+            }
 
             return result;
         }
@@ -32,10 +75,9 @@ namespace PokeSpams.Models
         /////////////////////////////////////////////////////////////
         //////////////////// B O O Y E R M O O R E //////////////////
         /////////////////////////////////////////////////////////////
-        public List<List<string>> BooyerMoore(List<string> patterns)
+        public static List<List<string>> BooyerMoore(List<string> patterns)
         {
             List<List<String>> result = new List<List<String>> { };
-            var service = new Services();
             
             // Iterasi setiap kalimat
             foreach(var word in inspectWord)
@@ -54,7 +96,7 @@ namespace PokeSpams.Models
                         pointer <= (word.Count() - 1) && 
                         word.Count() >= pattern.Count())
                     {
-                        found = service.checkWord(
+                        found = Services.checkWord(
                                     pattern.ToLower(),
                                     word.Substring(
                                         pointer - (pattern.Count() - 1),
@@ -88,7 +130,7 @@ namespace PokeSpams.Models
         ////////////////////////////////////////////////////
         /////////////////// R E G E X //////////////////////
         ////////////////////////////////////////////////////
-        public List<List<string>> Rgx(List<string> patterns)
+        public static List<List<string>> Rgx(List<string> patterns)
         {
             var result = new List<List<string>> { };
 

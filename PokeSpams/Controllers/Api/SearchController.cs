@@ -19,20 +19,19 @@ namespace PokeSpams.Controllers.Api
         public List<List<String>> GetSearch(string method, string patterns)
         {
             List<String> pattern = new List<String> (patterns.Split(','));
-            var algo = new Algorithm();
             var result = new List<List<String>>();
             
             if (method == "regex")
             {
-                result = algo.Rgx(pattern);
+                result = Algorithm.Rgx(pattern);
             }
             else if (method == "kmp")
             {
-                result = algo.KMP(pattern);
+                result = Algorithm.Kmp(pattern);
             }
             else if (method == "bym")
             {
-                result = algo.BooyerMoore(pattern);
+                result = Algorithm.BooyerMoore(pattern);
             }
 
             return result;

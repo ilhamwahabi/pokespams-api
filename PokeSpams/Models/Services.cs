@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Net;
+using System.IO;
 
 namespace PokeSpams.Models
 {
@@ -12,15 +14,44 @@ namespace PokeSpams.Models
         //private string consumerKey = "CMF9kqcVcmESFSB5wxKDd3ifZ";
         //private string consumerKeySecret = " vif3dOiwCSeQPowWvdY1JYN51ciTJrppJ4CeifeIjyyZrJjiYl";
 
-        public List<List<String>> getTwit()
+        public static List<List<String>> getTweets()
         {
             List<List<String>> result = null;
 
             return result;
         }
 
+        public static int[] borderFunction(String pattern)
+        {
+            var result = new int[pattern.Count()];
+            result[0] = 0;
 
-        public List<int> checkWord(String pattern, String word)
+            var patternLength = pattern.Count();
+            var j = 0;
+            var i = 1;
+
+            while (i < patternLength)
+            {
+                if (pattern.ElementAt(j).Equals(pattern.ElementAt(i)))
+                {
+                    result[i] = j + 1;
+                    i++;
+                    j++;
+                } else if (j > 0)
+                {
+                    j = result[j - 1];
+                }
+                else
+                {
+                    result[i] = 0;
+                    i++;
+                }
+            }
+
+            return result;
+;        }
+
+        public static List<int> checkWord(String pattern, String word)
         {
             var equals = true;
             var stepSize = 0;
