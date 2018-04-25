@@ -23,7 +23,8 @@ namespace PokeSpams.Models
 
                 var query = "tes";
                 var url = "https://api.twitter.com/1.1/search/tweets.json";
-                var count = "50";
+                var count = "100";
+            var lang = "id";
 
                 // oauth application keys
                 var oauth_token = "985637925676204032-oZYIX5y0ARwvWEYsj91AwnYUjoe9ISR"; //"insert here...";
@@ -41,7 +42,7 @@ namespace PokeSpams.Models
                 var oauth_timestamp = Convert.ToInt64(timeSpan.TotalSeconds).ToString();
 
                 // create oauth signature
-                var baseFormat = "oauth_consumer_key={0}&oauth_nonce={1}&oauth_signature_method={2}" +
+                var baseFormat = "count={7}&lang={8}&oauth_consumer_key={0}&oauth_nonce={1}&oauth_signature_method={2}" +
                                  "&oauth_timestamp={3}&oauth_token={4}&oauth_version={5}&q={6}";
 
                 var baseString = string.Format(baseFormat,
@@ -51,7 +52,9 @@ namespace PokeSpams.Models
                     oauth_timestamp,
                     oauth_token,
                     oauth_version,
-                    Uri.EscapeDataString(query)
+                    Uri.EscapeDataString(query),
+                    Uri.EscapeDataString(count),
+                    Uri.EscapeDataString(lang)
                 );
 
                 baseString = string.Concat("GET&", Uri.EscapeDataString(url), "&", Uri.EscapeDataString(baseString));
@@ -79,15 +82,13 @@ namespace PokeSpams.Models
                     Uri.EscapeDataString(oauth_consumer_key),
                     Uri.EscapeDataString(oauth_token),
                     Uri.EscapeDataString(oauth_signature),
-                    Uri.EscapeDataString(oauth_version),
-                    Uri.EscapeDataString(count),
-                    Uri.EscapeDataString(query)
+                    Uri.EscapeDataString(oauth_version)
                 );
 
                 ServicePointManager.Expect100Continue = false;
 
             // make the request
-            url += "?q=" + Uri.EscapeDataString(query);
+            url += "?q=" + Uri.EscapeDataString(query) + "&lang=" + Uri.EscapeDataString(lang) + "&count=" + Uri.EscapeDataString(count);
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
             request.Headers.Add("Authorization", authHeader);
             request.Method = "GET";

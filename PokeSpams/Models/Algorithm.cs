@@ -99,7 +99,7 @@ namespace PokeSpams.Models
                     while (
                         found[0].Equals(0) && 
                         pointer <= (word[0].Count() - 1) && 
-                        word.Count() >= pattern.Count())
+                        word[0].Count() >= pattern.Count())
                     {
                         found = Services.checkWord(
                                     pattern.ToLower(),

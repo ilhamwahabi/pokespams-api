@@ -18,7 +18,7 @@ namespace PokeSpams.Controllers.Api
         [HttpGet]
         public List<List<String>> GetSearch(string method, string patterns)
         {
-            List<String> pattern = new List<String> (patterns.Split(','));
+            List<String> pattern = new List<String> ((patterns.Replace("%20", " ")).Split(','));
             var result = new List<List<String>>();
             
             if (method == "regex")
