@@ -25,10 +25,12 @@ namespace PokeSpams.Models
         {
             var result = new List<List<string>> { };
 
-            foreach (var word in inspectWord)
+            var inspectedText = Services.getTweets();
+
+            foreach (var word in inspectedText)
             {
                 var patternResult = new List<String> { };
-                var n = word.Count();
+                var n = word[0].Count();
 
                 foreach (var pattern in patterns)
                 {
@@ -41,14 +43,15 @@ namespace PokeSpams.Models
 
                     while (i < n && !found)
                     {
-                        if (pattern.ElementAt(j).Equals(word.ToLower().ElementAt(i)))
+                        if (pattern.ElementAt(j).Equals(word[0].ToLower().ElementAt(i)))
                         {
                             if (j == m - 1)
                             {
                                 found = true;
-                                if (patternResult.IndexOf(word) == -1)
+                                if (patternResult.IndexOf(word[0]) == -1)
                                 {
-                                    patternResult.Add(word);
+                                    patternResult.Add(word[0]);
+                                    patternResult.Add(word[1]);
                                 }
                                 patternResult.Add(pattern);
                             }
@@ -65,7 +68,7 @@ namespace PokeSpams.Models
                     }
                 }
 
-                if (patternResult.IndexOf(word) == 0)
+                if (patternResult.IndexOf(word[0]) == 0)
                     result.Add(patternResult);
             }
 
@@ -78,9 +81,11 @@ namespace PokeSpams.Models
         public static List<List<string>> BooyerMoore(List<string> patterns)
         {
             List<List<String>> result = new List<List<String>> { };
-            
+
+            var inspectedText = Services.getTweets();
+
             // Iterasi setiap kalimat
-            foreach(var word in inspectWord)
+            foreach(var word in inspectedText)
             {
                 var patternResult = new List<String> { };
 
@@ -93,12 +98,12 @@ namespace PokeSpams.Models
                     // Pencarian Booyer-Moore pada sepanjang kalimat
                     while (
                         found[0].Equals(0) && 
-                        pointer <= (word.Count() - 1) && 
+                        pointer <= (word[0].Count() - 1) && 
                         word.Count() >= pattern.Count())
                     {
                         found = Services.checkWord(
                                     pattern.ToLower(),
-                                    word.Substring(
+                                    word[0].Substring(
                                         pointer - (pattern.Count() - 1),
                                         pattern.Count()
                                     ).ToLower()
@@ -112,16 +117,18 @@ namespace PokeSpams.Models
                     // Jika ditemukan, simpan katanya jika belum tersimpan serta simpan patternnya
                     if (found[0].Equals(1))
                     {
-                        if (patternResult.IndexOf(word) == -1)
+                        if (patternResult.IndexOf(word[0]) == -1)
                         {
-                            patternResult.Add(word);
-                            patternResult.Add(pattern);
+                            patternResult.Add(word[0]);
+                            patternResult.Add(word[1]);
                         }
+                        patternResult.Add(pattern);
+
                     }
                 }
 
                 // Jika list tidak kosong, berarti ditemukan maka tambahkan ke hasil
-                if (patternResult.IndexOf(word) == 0)
+                if (patternResult.IndexOf(word[0]) == 0)
                     result.Add(patternResult);
             }
             return result;
@@ -134,19 +141,22 @@ namespace PokeSpams.Models
         {
             var result = new List<List<string>> { };
 
-            foreach (var word in inspectWord)
+            var inspectedText = Services.getTweets();
+
+            foreach (var word in inspectedText)
             {
                 var patternResult = new List<String> { };
                 var found = false;
                 foreach (var pattern in patterns)
                 {
-                    Match match = Regex.Match(word, @"" + pattern ,RegexOptions.IgnoreCase);
+                    Match match = Regex.Match(word[0], @"" + pattern ,RegexOptions.IgnoreCase);
 
                     if (match.Success)
                     {
                         found = true;
-                        if (patternResult.IndexOf(word) != 0)
-                            patternResult.Add(word);
+                        if (patternResult.IndexOf(word[0]) != 0)
+                            patternResult.Add(word[0]);
+                            patternResult.Add(word[1]);
                         patternResult.Add(pattern);
                     }
                 }

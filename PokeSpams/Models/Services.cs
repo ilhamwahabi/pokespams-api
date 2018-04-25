@@ -4,6 +4,9 @@ using System.Linq;
 using System.Web;
 using System.Net;
 using System.IO;
+using System.Security.Cryptography;
+using System.Text;
+using Newtonsoft.Json.Linq;
 
 namespace PokeSpams.Models
 {
@@ -16,7 +19,96 @@ namespace PokeSpams.Models
 
         public static List<List<String>> getTweets()
         {
-            List<List<String>> result = null;
+            var result = new List<List<String>>{};
+
+                var query = "tes";
+                var url = "https://api.twitter.com/1.1/search/tweets.json";
+                var count = "50";
+
+                // oauth application keys
+                var oauth_token = "985637925676204032-oZYIX5y0ARwvWEYsj91AwnYUjoe9ISR"; //"insert here...";
+                var oauth_token_secret = "qt6tgqWWUsufyCqHREhTdGkS726i1DCVEsULjRXxAmKyP"; //"insert here...";
+                var oauth_consumer_key = "CMF9kqcVcmESFSB5wxKDd3ifZ";// = "insert here...";
+                var oauth_consumer_secret = "vif3dOiwCSeQPowWvdY1JYN51ciTJrppJ4CeifeIjyyZrJjiYl";// = "insert here...";
+
+                // oauth implementation details
+                var oauth_version = "1.0";
+                var oauth_signature_method = "HMAC-SHA1";
+
+                var oauth_nonce = Convert.ToBase64String(new ASCIIEncoding().GetBytes(DateTime.Now.Ticks.ToString()));
+                var timeSpan = DateTime.UtcNow
+                               - new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
+                var oauth_timestamp = Convert.ToInt64(timeSpan.TotalSeconds).ToString();
+
+                // create oauth signature
+                var baseFormat = "oauth_consumer_key={0}&oauth_nonce={1}&oauth_signature_method={2}" +
+                                 "&oauth_timestamp={3}&oauth_token={4}&oauth_version={5}&q={6}";
+
+                var baseString = string.Format(baseFormat,
+                    oauth_consumer_key,
+                    oauth_nonce,
+                    oauth_signature_method,
+                    oauth_timestamp,
+                    oauth_token,
+                    oauth_version,
+                    Uri.EscapeDataString(query)
+                );
+
+                baseString = string.Concat("GET&", Uri.EscapeDataString(url), "&", Uri.EscapeDataString(baseString));
+
+                var compositeKey = string.Concat(Uri.EscapeDataString(oauth_consumer_secret),
+                    "&", Uri.EscapeDataString(oauth_token_secret));
+
+                string oauth_signature;
+                using (HMACSHA1 hasher = new HMACSHA1(ASCIIEncoding.ASCII.GetBytes(compositeKey)))
+                {
+                    oauth_signature = Convert.ToBase64String(
+                        hasher.ComputeHash(ASCIIEncoding.ASCII.GetBytes(baseString)));
+                }
+
+                // create the request header
+                var headerFormat = "OAuth oauth_consumer_key=\"{3}\", oauth_nonce=\"{0}\", " +
+                                   "oauth_signature=\"{5}\", oauth_signature_method=\"{1}\", " +
+                                   "oauth_timestamp=\"{2}\", oauth_token=\"{4}\", " +
+                                   "oauth_version=\"{6}\"";
+
+                var authHeader = string.Format(headerFormat,
+                    Uri.EscapeDataString(oauth_nonce),
+                    Uri.EscapeDataString(oauth_signature_method),
+                    Uri.EscapeDataString(oauth_timestamp),
+                    Uri.EscapeDataString(oauth_consumer_key),
+                    Uri.EscapeDataString(oauth_token),
+                    Uri.EscapeDataString(oauth_signature),
+                    Uri.EscapeDataString(oauth_version),
+                    Uri.EscapeDataString(count),
+                    Uri.EscapeDataString(query)
+                );
+
+                ServicePointManager.Expect100Continue = false;
+
+            // make the request
+            url += "?q=" + Uri.EscapeDataString(query);
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+            request.Headers.Add("Authorization", authHeader);
+            request.Method = "GET";
+            request.ContentType = "application/x-www-form-urlencoded";
+
+            var response = (HttpWebResponse)request.GetResponse();
+            var reader = new StreamReader(response.GetResponseStream());
+            var objText = reader.ReadToEnd();
+
+            JObject jsonDat = JObject.Parse(objText);
+
+            for (int i = 0; i < jsonDat.GetValue("statuses").Count(); i++)
+            {
+                var data = (JObject)jsonDat.GetValue("statuses")[i];
+
+                result.Add(new List<string>
+                {
+                    data.GetValue("text").ToString(),
+                    data.GetValue("created_at").ToString(),
+                });
+            }
 
             return result;
         }
