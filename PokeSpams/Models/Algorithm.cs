@@ -2,22 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
-using System.Web;
 
 namespace PokeSpams.Models
 {
     public class Algorithm
     {
-        private static List<String> inspectWord = new List<String>
-        {
-            "Dijual buku seharga 2000",
-            "Test drive segera ditempat anda",
-            "Hari yang cerah di pantai",
-            "Enaknya menjadi atesit pada hari ini",
-            "Tidak ada tempat yang lebin indah daripada tempat yang sudah dites",
-            "Tidak ada tempat yang lebih indah selain tempat ini"
-        };
-
         ////////////////////////////////////////////////////
         ///////////////////// K M P ////////////////////////
         ////////////////////////////////////////////////////
@@ -25,7 +14,7 @@ namespace PokeSpams.Models
         {
             var result = new List<List<string>> { };
 
-            var inspectedText = Services.getTweets();
+            var inspectedText = Services.GetTweets();
 
             foreach (var word in inspectedText)
             {
@@ -36,7 +25,7 @@ namespace PokeSpams.Models
                 {
                     var m = pattern.Count();
                     var found = false;
-                    var border = Services.borderFunction(pattern);
+                    var border = Services.BorderFunction(pattern);
 
                     var i = 0;
                     var j = 0;
@@ -72,6 +61,7 @@ namespace PokeSpams.Models
                     result.Add(patternResult);
             }
 
+
             return result;
         }
 
@@ -82,7 +72,7 @@ namespace PokeSpams.Models
         {
             List<List<String>> result = new List<List<String>> { };
 
-            var inspectedText = Services.getTweets();
+            var inspectedText = Services.GetTweets();
 
             // Iterasi setiap kalimat
             foreach(var word in inspectedText)
@@ -101,7 +91,7 @@ namespace PokeSpams.Models
                         pointer <= (word[0].Count() - 1) && 
                         word[0].Count() >= pattern.Count())
                     {
-                        found = Services.checkWord(
+                        found = Services.CheckWord(
                                     pattern.ToLower(),
                                     word[0].Substring(
                                         pointer - (pattern.Count() - 1),
@@ -141,7 +131,7 @@ namespace PokeSpams.Models
         {
             var result = new List<List<string>> { };
 
-            var inspectedText = Services.getTweets();
+            var inspectedText = Services.GetTweets();
 
             foreach (var word in inspectedText)
             {
