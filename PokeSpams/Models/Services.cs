@@ -11,14 +11,14 @@ namespace PokeSpams.Models
 {
     public class Services
     {
-        public static List<List<String>> GetTweets()
+        public static List<List<string>> GetTweets()
         {
-            var result = new List<List<String>>{};
+            var result = new List<List<string>>();
 
-            var query = "tes";
+            const string query = "tes";
             var url = "https://api.twitter.com/1.1/search/tweets.json";
-            var count = "100";
-            var lang = "id";
+            const string count = "100";
+            const string lang = "id";
 
             // oauth application keys
             var oauth_token = "985637925676204032-oZYIX5y0ARwvWEYsj91AwnYUjoe9ISR"; //"insert here...";
@@ -30,9 +30,11 @@ namespace PokeSpams.Models
             var oauth_version = "1.0";
             var oauth_signature_method = "HMAC-SHA1";
 
+            // ReSharper disable once InconsistentNaming
             var oauth_nonce = Convert.ToBase64String(new ASCIIEncoding().GetBytes(DateTime.Now.Ticks.ToString()));
             var timeSpan = DateTime.UtcNow
                                - new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
+            // ReSharper disable once InconsistentNaming
             var oauth_timestamp = Convert.ToInt64(timeSpan.TotalSeconds).ToString();
 
             // create oauth signature
@@ -56,11 +58,12 @@ namespace PokeSpams.Models
             var compositeKey = string.Concat(Uri.EscapeDataString(oauth_consumer_secret),
                "&", Uri.EscapeDataString(oauth_token_secret));
 
+            // ReSharper disable once InconsistentNaming
             string oauth_signature;
-            using (HMACSHA1 hasher = new HMACSHA1(ASCIIEncoding.ASCII.GetBytes(compositeKey)))
+            using (var hasher = new HMACSHA1(Encoding.ASCII.GetBytes(compositeKey)))
             {
                 oauth_signature = Convert.ToBase64String(
-                    hasher.ComputeHash(ASCIIEncoding.ASCII.GetBytes(baseString)));
+                    hasher.ComputeHash(Encoding.ASCII.GetBytes(baseString)));
             }
 
             // create the request header
@@ -89,7 +92,7 @@ namespace PokeSpams.Models
             request.ContentType = "application/x-www-form-urlencoded";
 
             var response = (HttpWebResponse)request.GetResponse();
-            var reader = new StreamReader(response.GetResponseStream());
+            var reader = new StreamReader(response.GetResponseStream() ?? throw new InvalidOperationException());
             var objText = reader.ReadToEnd();
 
             JObject jsonDat = JObject.Parse(objText);
@@ -108,12 +111,12 @@ namespace PokeSpams.Models
             return result;
         }
 
-        public static int[] BorderFunction(String pattern)
+        public static int[] BorderFunction(string pattern)
         {
-            var result = new int[pattern.Count()];
+            var result = new int[pattern.Length];
             result[0] = 0;
 
-            var patternLength = pattern.Count();
+            var patternLength = pattern.Length;
             var j = 0;
             var i = 1;
 
@@ -136,21 +139,22 @@ namespace PokeSpams.Models
             }
 
             return result;
-;        }
+        }
 
-        public static List<int> CheckWord(String pattern, String word)
+        public static List<int> CheckWord(string pattern, string word)
         {
+            if (word == null) throw new ArgumentNullException(nameof(word));
             var equals = true;
             var stepSize = 0;
 
             if (pattern.Last() == word.Last())
             {
                 var i = 1;
-                while (equals && i <= (pattern.Count() - 1))
+                while (equals && i <= (pattern.Length - 1))
                 {
                     if (
-                        pattern.ElementAt((pattern.Count() - 1) - i)
-                            .Equals(word.ElementAt((pattern.Count() - 1) - i)))
+                        pattern.ElementAt((pattern.Length - 1) - i)
+                            .Equals(word.ElementAt((pattern.Length - 1) - i)))
                     {
                         i++;
                     }
@@ -163,7 +167,7 @@ namespace PokeSpams.Models
             }
             else
             {
-                stepSize = pattern.Count() - (pattern.IndexOf(word.Last()) == -1 ? 0 : pattern.IndexOf(word.Last()) + 1);
+                stepSize = pattern.Length - (pattern.IndexOf(word.Last()) == -1 ? 0 : pattern.IndexOf(word.Last()) + 1);
                 equals = false;
             }
 

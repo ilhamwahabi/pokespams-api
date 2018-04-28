@@ -12,18 +12,18 @@ namespace PokeSpams.Models
         ////////////////////////////////////////////////////
         public static List<List<string>> Kmp(List<string> patterns)
         {
-            var result = new List<List<string>> { };
+            var result = new List<List<string>>();
 
             var inspectedText = Services.GetTweets();
 
             foreach (var word in inspectedText)
             {
-                var patternResult = new List<String> { };
-                var n = word[0].Count();
+                var patternResult = new List<string> ();
+                var n = word[0].Length;
 
                 foreach (var pattern in patterns)
                 {
-                    var m = pattern.Count();
+                    var m = pattern.Length;
                     var found = false;
                     var border = Services.BorderFunction(pattern);
 
@@ -70,32 +70,32 @@ namespace PokeSpams.Models
         /////////////////////////////////////////////////////////////
         public static List<List<string>> BooyerMoore(List<string> patterns)
         {
-            List<List<String>> result = new List<List<String>> { };
+            List<List<string>> result = new List<List<string>> ();
 
             var inspectedText = Services.GetTweets();
 
             // Iterasi setiap kalimat
             foreach(var word in inspectedText)
             {
-                var patternResult = new List<String> { };
+                var patternResult = new List<String> ();
 
                 // Tiap kalimat dicocokkan dengan pattern
                 foreach (var pattern in patterns)
                 {
                     List<int> found = new List<int>(){ 0, 0 };
-                    var pointer = pattern.Count() - 1;
+                    var pointer = pattern.Length - 1;
 
                     // Pencarian Booyer-Moore pada sepanjang kalimat
                     while (
                         found[0].Equals(0) && 
-                        pointer <= (word[0].Count() - 1) && 
-                        word[0].Count() >= pattern.Count())
+                        pointer <= (word[0].Length - 1) && 
+                        word[0].Length >= pattern.Length)
                     {
                         found = Services.CheckWord(
                                     pattern.ToLower(),
                                     word[0].Substring(
-                                        pointer - (pattern.Count() - 1),
-                                        pattern.Count()
+                                        pointer - (pattern.Length - 1),
+                                        pattern.Length
                                     ).ToLower()
                                 );
 
@@ -129,13 +129,13 @@ namespace PokeSpams.Models
         ////////////////////////////////////////////////////
         public static List<List<string>> Rgx(List<string> patterns)
         {
-            var result = new List<List<string>> { };
+            var result = new List<List<string>> ();
 
             var inspectedText = Services.GetTweets();
 
             foreach (var word in inspectedText)
             {
-                var patternResult = new List<String> { };
+                var patternResult = new List<string> ();
                 var found = false;
                 foreach (var pattern in patterns)
                 {
