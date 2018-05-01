@@ -21,10 +21,10 @@ namespace PokeSpams.Models
             const string lang = "id";
 
             // oauth application keys
-            var oauth_token = "985637925676204032-oZYIX5y0ARwvWEYsj91AwnYUjoe9ISR"; //"insert here...";
-            var oauth_token_secret = "qt6tgqWWUsufyCqHREhTdGkS726i1DCVEsULjRXxAmKyP"; //"insert here...";
-            var oauth_consumer_key = "CMF9kqcVcmESFSB5wxKDd3ifZ";// = "insert here...";
-            var oauth_consumer_secret = "vif3dOiwCSeQPowWvdY1JYN51ciTJrppJ4CeifeIjyyZrJjiYl";// = "insert here...";
+            var oauth_token = "	985637925676204032-SM2QQopAdzw2qyAdlxk5NBnhH4CG40g"; //"insert here...";
+            var oauth_token_secret = "4lb7KrcVAzddYYg49v7aaIfJQPMPh0OP3cTkNwfjmdeFE"; //"insert here...";
+            var oauth_consumer_key = "vDIwbKQyNx6tr5YNrJK5LYJIT";// = "insert here...";
+            var oauth_consumer_secret = "ANB1hcVEb13Xid6QHHWeisUsc2lrz3P1OO6mdoncKZ8PpsODFI";// = "insert here...";
 
             // oauth implementation details
             var oauth_version = "1.0";
