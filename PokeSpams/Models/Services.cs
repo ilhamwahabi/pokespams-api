@@ -6,15 +6,16 @@ using System.IO;
 using System.Security.Cryptography;
 using System.Text;
 using Newtonsoft.Json.Linq;
+using PokeSpams.Config;
 
 namespace PokeSpams.Models
 {
     public class Services
     {
-        public static string oauth_token = "985637925676204032-SM2QQopAdzw2qyAdlxk5NBnhH4CG40g"; //"insert here...";
-        public static string oauth_token_secret = "4lb7KrcVAzddYYg49v7aaIfJQPMPh0OP3cTkNwfjmdeFE"; //"insert here...";
-        public static string oauth_consumer_key = "vDIwbKQyNx6tr5YNrJK5LYJIT";// "insert here...";
-        public static string oauth_consumer_secret = "ANB1hcVEb13Xid6QHHWeisUsc2lrz3P1OO6mdoncKZ8PpsODFI";// "insert here...";
+        public static string oauth_token = Keys.OAuthToken;
+        public static string oauth_token_secret = Keys.OAuthTokenSecret;
+        public static string oauth_consumer_key = Keys.OAuthConsumerKey;// "insert here...";
+        public static string oauth_consumer_secret = Keys.OAuthConsumerSecret;// "insert here...";
 
         public static List<List<string>> GetTweets()
         {
